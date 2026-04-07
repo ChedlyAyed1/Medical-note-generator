@@ -28,7 +28,6 @@ The current workflow is:
 - Keep heavy speech-to-text dependencies outside the main Django app
 - Keep business logic out of views and serializers
 - Use small, named modules instead of catch-all files
-- Make the repo readable enough to use as a portfolio project
 
 ## External Dependencies
 
@@ -89,5 +88,6 @@ Useful local URLs:
 ## Immediate next milestones
 
 1. Create migrations and wire PostgreSQL if you want production parity early.
-2. Add background job execution once the synchronous happy path works.
-3. Add prompt versioning and note validation rules specific to your medical workflow.
+2. Add asynchronous workers for heavy tasks such as transcription, diarization, and note generation.
+3. Evaluate Celery with Redis or RabbitMQ once the synchronous flow is stable.
+4. Add prompt versioning and note validation rules specific to your medical workflow.
