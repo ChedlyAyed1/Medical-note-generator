@@ -15,7 +15,7 @@ async def healthcheck() -> HealthResponse:
 @router.post("/api/v1/transcriptions", response_model=TranscriptionResponse)
 async def create_transcription(
     file: UploadFile = File(...),
-    language: str = Form(default=""),
+    language: str = Form(default="en"),
 ) -> TranscriptionResponse:
     temp_path = await persist_upload_to_temp(file)
     try:

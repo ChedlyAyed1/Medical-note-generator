@@ -43,12 +43,13 @@ def normalize_speaker_labels(segments: list[dict]) -> list[dict]:
     return segments
 
 
-def transcribe_file(*, file_path: str, language: str = "") -> dict:
+def transcribe_file(*, file_path: str, language: str = "en") -> dict:
     import whisperx
 
     model = get_transcription_model()
     audio = whisperx.load_audio(file_path)
-    result = model.transcribe(audio, batch_size=settings.batch_size, language=language or None)
+    effective_language = (language or "en").strip()
+    result = model.transcribe(audio, batch_size=settings.batch_size, language=effective_language)
 
     if settings.align_output and result.get("segments"):
         align_model, metadata = whisperx.load_align_model(
@@ -92,6 +93,6 @@ def transcribe_file(*, file_path: str, language: str = "") -> dict:
 
     return {
         "text": full_text,
-        "language": result.get("language", language or ""),
+        "language": result.get("language", effective_language),
         "segments": segments,
     }
