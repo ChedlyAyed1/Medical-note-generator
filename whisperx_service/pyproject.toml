@@ -9,6 +9,7 @@ description = "WhisperX CPU transcription service for the medical note generator
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115,<1.0",
+  "python-dotenv>=1.0,<2.0",
   "uvicorn[standard]>=0.34,<1.0",
   "python-multipart>=0.0.20,<1.0",
   "whisperx>=3.3,<4.0",

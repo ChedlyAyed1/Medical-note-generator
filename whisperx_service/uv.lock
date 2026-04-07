@@ -1186,6 +1186,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "uvicorn", extra = ["standard"] },
     { name = "whisperx" },
@@ -1202,6 +1203,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.115,<1.0" },
     { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.27,<1.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3,<9.0" },
+    { name = "python-dotenv", specifier = ">=1.0,<2.0" },
     { name = "python-multipart", specifier = ">=0.0.20,<1.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.34,<1.0" },
     { name = "whisperx", specifier = ">=3.3,<4.0" },
