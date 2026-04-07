@@ -15,7 +15,6 @@ services:
   whisperx:
     build:
       context: ./whisperx_service
-      dockerfile: DockerFIle
     env_file:
       - .env
     volumes:
