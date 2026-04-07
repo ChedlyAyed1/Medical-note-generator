@@ -1,0 +1,25 @@
+services:
+  django-api:
+    build:
+      context: ./django_app
+    env_file:
+      - .env
+    volumes:
+      - ./django_app:/app
+      - ./media:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - whisperx
+
+  whisperx:
+    build:
+      context: ./whisperx_service
+      dockerfile: DockerFIle
+    env_file:
+      - .env
+    volumes:
+      - ./whisperx_service:/app
+      - ./media:/tmp/medical-note-generator
+    ports:
+      - "8001:8001"

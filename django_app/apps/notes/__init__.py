@@ -1,0 +1,1 @@
+"""Medical note generation domain."""
