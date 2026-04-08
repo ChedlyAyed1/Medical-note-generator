@@ -103,6 +103,7 @@ SPECTACULAR_SETTINGS = {
         "and clinical note generation."
     ),
     "VERSION": "0.1.0",
+    "COMPONENT_SPLIT_REQUEST": True,
     "SERVE_INCLUDE_SCHEMA": False,
 }
 

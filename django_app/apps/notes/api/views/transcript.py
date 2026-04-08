@@ -1,3 +1,4 @@
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,6 +13,10 @@ from apps.notes.services import transcribe_job
 class JobDetailView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Retrieve a transcription job",
+        responses={200: TranscriptionJobSerializer},
+    )
     def get(self, _request, job_id):
         job = get_job_by_id(job_id=job_id)
         serializer = TranscriptionJobSerializer(job)
@@ -21,6 +26,14 @@ class JobDetailView(APIView):
 class JobTranscriptionRunView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Run WhisperX transcription for a job",
+        request=None,
+        responses={
+            200: TranscriptionJobSerializer,
+            400: OpenApiResponse(description="Job is in an invalid state."),
+        },
+    )
     def post(self, _request, job_id):
         job = get_job_by_id(job_id=job_id)
 

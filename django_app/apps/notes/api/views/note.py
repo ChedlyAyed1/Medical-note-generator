@@ -1,3 +1,4 @@
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,6 +13,10 @@ from apps.notes.services import generate_clinical_note_for_job
 class ClinicalNoteDetailView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Retrieve a generated clinical note",
+        responses={200: ClinicalNoteSerializer},
+    )
     def get(self, _request, note_id):
         note = get_note_by_id(note_id=note_id)
         serializer = ClinicalNoteSerializer(note)
@@ -21,6 +26,14 @@ class ClinicalNoteDetailView(APIView):
 class JobGenerateNoteView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Generate a clinical note from a completed transcript",
+        request=None,
+        responses={
+            201: ClinicalNoteSerializer,
+            400: OpenApiResponse(description="Transcript is not ready for note generation."),
+        },
+    )
     def post(self, _request, job_id):
         job = get_job_by_id(job_id=job_id)
 
