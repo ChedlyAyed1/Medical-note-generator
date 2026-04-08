@@ -25,9 +25,9 @@ class WhisperXResult:
 
 
 class WhisperXClient:
-    def __init__(self, base_url: str | None = None, timeout: float = 120.0) -> None:
+    def __init__(self, base_url: str | None = None, timeout: float | None = None) -> None:
         self.base_url = (base_url or settings.WHISPERX_BASE_URL).rstrip("/")
-        self.timeout = timeout
+        self.timeout = timeout if timeout is not None else settings.WHISPERX_TIMEOUT_SECONDS
 
     def transcribe(self, *, file_path: str, language: str = "") -> WhisperXResult:
         upload_name = Path(file_path).name
@@ -42,6 +42,8 @@ class WhisperXClient:
                     timeout=self.timeout,
                 )
                 response.raise_for_status()
+        except httpx.TimeoutException as exc:
+            raise ExternalServiceError("WhisperX service call timed out.") from exc
         except httpx.HTTPError as exc:
             raise ExternalServiceError("WhisperX service call failed.") from exc
 
