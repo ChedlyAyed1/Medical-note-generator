@@ -1,6 +1,6 @@
 # Medical Note Generator
 
-Personal monorepo for a medical note generation pipeline built with Django, WhisperX, and Groq.
+Monorepo for a medical note generation pipeline built with Django, WhisperX, and Groq.
 
 - `django_app` handles the API, orchestration, and persistence
 - `whisperx_service` handles CPU transcription and diarization
@@ -77,12 +77,42 @@ Useful local URLs:
 - WhisperX healthcheck: `http://127.0.0.1:8001/health`
 - WhisperX docs: `http://127.0.0.1:8001/docs`
 
+## End-to-End Flow
+
+The current synchronous API flow is:
+
+1. `POST /api/notes/uploads/`
+2. `POST /api/notes/jobs/{job_id}/transcribe/`
+3. `POST /api/notes/jobs/{job_id}/generate-note/`
+4. `GET /api/notes/jobs/{job_id}/` or `GET /api/notes/{note_id}/`
+
+For local development, long WhisperX runs may require a larger Django-side timeout. The repository currently supports `WHISPERX_TIMEOUT_SECONDS` for that purpose.
+
+## Tests
+
+Django service-level tests cover:
+
+- transcription job creation
+- transcription success and failure paths
+- transcript segment persistence and retry replacement
+- clinical note generation and note updates
+- invalid state guards for transcription and note generation
+
+Run them with:
+
+```bash
+cd django_app
+uv run pytest apps/notes/tests -q
+```
+
 ## Current Status
 
 - WhisperX CPU transcription is working
 - Speaker diarization is working with normalized labels such as `spk1` and `spk2`
-- Django upload and transcription job flow is in place
-- Groq integration is in place
+- Django upload and transcription job flow is working end to end
+- Groq note generation is working end to end
+- Django API docs are available through Swagger and ReDoc
+- Service-level unit tests are in place for the main Django workflow
 - Background jobs and production hardening are still pending
 
 ## Immediate next milestones
